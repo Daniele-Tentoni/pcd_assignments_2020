@@ -34,7 +34,7 @@ public class SimulatorWorker extends Worker {
         long iter = 0;
 
         while (iter < this.maxIteration){
-            log("*** INIZIO ITERAZIONE " + iter + " ***");
+            // log("*** INIZIO ITERAZIONE " + iter + " ***");
 
             /* compute bodies new pos */
 
@@ -49,14 +49,14 @@ public class SimulatorWorker extends Worker {
             try {
                 // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
-                log("***___ Ho superato la barriera update " + iter + " ___***");
+                // log("***___ Ho superato la barriera update " + iter + " ___***");
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
 
             /* check collisions */
 
-            for (int i = 0; i < bodies.size() - 1; i++) {
+            for (int i = 0; i < bodies.size(); i++) {
                 Body b1 = bodies.get(i);
                 if(b1.takeCollide()) {
                     // log("Ho preso il permesso su " + i);
@@ -68,20 +68,22 @@ public class SimulatorWorker extends Worker {
                             Body.solveCollision(b1, b2);
                         }
                     }
+
+                    b1.checkAndSolveBoundaryCollision(this.bounds);
                 }
             }
 
-            try {
+            /*try {
                 // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
                 log("***___ Ho superato la barriera collide " + iter + " ___***");
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             /* check boundaries */
 
-            for (Body b: this.bodies) {
+            /*for (Body b: this.bodies) {
                 if(b.takeBoundary()) {
                     try {
                         log("Controllo i bordi di " + b.getIndex());
@@ -90,12 +92,12 @@ public class SimulatorWorker extends Worker {
                         e.printStackTrace();
                     }
                 }
-            }
+            }*/
 
             try {
                 // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
-                log("***___ Ho superato la barriera boundary " + iter + " ___***");
+                // log("***___ Ho superato la barriera boundary " + iter + " ___***");
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }

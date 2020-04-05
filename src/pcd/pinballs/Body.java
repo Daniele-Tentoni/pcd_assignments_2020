@@ -189,7 +189,7 @@ public class Body {
      *
      * @param bounds
      */
-    public void checkAndSolveBoundaryCollision(Boundary bounds) throws InterruptedException {
+    public void checkAndSolveBoundaryCollision(Boundary bounds) {
         double x = pos.getX();
         double y = pos.getY();
         // Velocity vx = this.getVel();
