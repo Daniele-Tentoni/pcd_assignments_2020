@@ -36,8 +36,11 @@ public class SimulatorMain {
         }
 
         ArrayList<Test> tests = new ArrayList<>();
-        tests.add(new Test(5, 500, 100));
-        tests.add(new Test(5, 1000, 100));
+        tests.add(new Test(2, 5000, 100));
+        tests.add(new Test(3, 5000, 100));
+        tests.add(new Test(4, 5000, 100));
+        // tests.add(new Test(5, 500, 100));
+        // tests.add(new Test(5, 1000, 100));
         tests.add(new Test(5, 5000, 100));
         /*tests.add(new Test(5, 500, 1000));
         tests.add(new Test(5, 1000, 1000));
@@ -46,18 +49,18 @@ public class SimulatorMain {
         tests.add(new Test(5, 1000, 5000));
         tests.add(new Test(5, 5000, 5000));*/
 
-        int nTests = 1;
+        int nTests = 20;
 
         for(int i = 0; i < nTests; i++) {
             for (Test test : tests) {
                 Simulator sim = new Simulator(test.nThread, test.iter, test.nBody);
                 test.addTime(sim.execute());
-                System.out.println("************************");
+                /*System.out.println("************************");
                 System.out.println("Prova con:"
                         + "\n\tN Thread:\t" + test.nThread
                         + "\n\tN Iter:\t\t" + test.iter
                         + "\n\tBody:\t\t" + test.nBody
-                        + "\n\tTempo:\t\t" + test.time);
+                        + "\n\tTempo:\t\t" + test.time);*/
             }
         }
 
