@@ -6,7 +6,7 @@ public class MyTest {
     public int nThread;
     public int iter;
     public int nBody;
-    private long time;
+    public long time;
     public ArrayList<Long> times;
 
     public MyTest(int nThread, int iter, int body) {

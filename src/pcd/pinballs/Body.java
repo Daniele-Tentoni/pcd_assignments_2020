@@ -3,6 +3,7 @@ package pcd.pinballs;
 import pcd.pinballs.components.Boundary;
 import pcd.pinballs.components.Position;
 import pcd.pinballs.components.Velocity;
+import pcd.pinballs.worker.Worker;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,7 +14,7 @@ public class Body {
     private double radius;
     private int index;
 
-    private volatile boolean updated, collided, bounded;
+    private boolean updated, collided, bounded;
     private boolean velocityAvailable;
     private ReentrantLock mutex;
     private Condition velocityLock;
@@ -104,11 +105,12 @@ public class Body {
         // }
     }
 
-    public Velocity getVel() throws InterruptedException {
+    public Velocity getVel(Worker worker) throws InterruptedException {
         try{
             mutex.lock();
 
-            while(!this.velocityAvailable){
+            while(!this.velocityAvailable) {
+                worker.log("Velocità ferma " + this.index);
                 this.velocityLock.await();
             }
 
@@ -134,8 +136,6 @@ public class Body {
 
             // Non dovrebbe servire. Adesso che si schiantano tutti sulla barriera
             // e quindi non ci sarà nessuno in attesa.
-            // this.posAvailable = true;
-            // this.positionLock.signalAll();
         } finally {
             mutex.unlock();
         }
@@ -191,32 +191,27 @@ public class Body {
     public void checkAndSolveBoundaryCollision(Boundary bounds) {
         double x = pos.getX();
         double y = pos.getY();
-        // Velocity vx = this.getVel();
         if (x > bounds.getX1()) {
             pos.change(bounds.getX1(), pos.getY());
-            // this.changeVel(-vel.getX(), vel.getY());
             vel.change(-vel.getX(), vel.getY());
         } else if (x < bounds.getX0()) {
             pos.change(bounds.getX0(), pos.getY());
-            // this.changeVel(-vel.getX(), vel.getY());
             vel.change(-vel.getX(), vel.getY());
         } else if (y > bounds.getY1()) {
             pos.change(pos.getX(), bounds.getY1());
-            // this.changeVel(vel.getX(), -vel.getY());
             vel.change(vel.getX(), -vel.getY());
         } else if (y < bounds.getY0()) {
             pos.change(pos.getX(), bounds.getY0());
-            // this.changeVel(vel.getX(), -vel.getY());
             vel.change(vel.getX(), -vel.getY());
         }
     }
 
-    public static void solveCollision(Body b1, Body b2) {
+    public static void solveCollision(Body b1, Body b2, Worker worker) {
         try {
             Position x1 = b1.getPos();
             Position x2 = b2.getPos();
-            Velocity v1 = b1.getVel();
-            Velocity v2 = b2.getVel();
+            Velocity v1 = b1.getVel(worker);
+            Velocity v2 = b2.getVel(worker);
 
             double x12dx = x1.getX() - x2.getX();
             double x12dy = x1.getY() - x2.getY();

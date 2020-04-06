@@ -69,7 +69,7 @@ public class SimulatorWorker extends Worker {
                         // log("Provo a collidere "+i+"/"+j);
                         if (b1.collideWith(b2)) {
                             // log("*** Collidono "+i+"/"+j+" ***");
-                            Body.solveCollision(b1, b2);
+                            Body.solveCollision(b1, b2, this);
                         }
                     }
 
