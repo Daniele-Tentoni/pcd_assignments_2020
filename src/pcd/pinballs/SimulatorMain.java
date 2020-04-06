@@ -7,41 +7,14 @@ public class SimulatorMain {
     public static void main(String[] args) {
 
         // SimulationViewer viewer = new SimulationViewer(620,620);
-        class Test {
-            public int nThread;
-            public int iter;
-            public int nBody;
-            private long time;
-            public ArrayList<Long> times;
 
-            public Test(int nThread, int iter, int body) {
-                this.nThread = nThread;
-                this.iter = iter;
-                this.nBody = body;
-                this.times = new ArrayList<>();
-            }
-
-            public void addTime(long time) {
-                this.time = time;
-                this.times.add(time);
-            }
-
-            public double getTimesAverage() {
-                long sum = 0;
-                for (Long time: times) {
-                    sum += time;
-                }
-                return (double)sum / times.size();
-            }
-        }
-
-        ArrayList<Test> tests = new ArrayList<>();
-        tests.add(new Test(2, 5000, 100));
-        tests.add(new Test(3, 5000, 100));
-        tests.add(new Test(4, 5000, 100));
+        ArrayList<MyTest> tests = new ArrayList<>();
+        tests.add(new MyTest(2, 5000, 100));
+        tests.add(new MyTest(3, 5000, 100));
+        tests.add(new MyTest(4, 5000, 100));
         // tests.add(new Test(5, 500, 100));
         // tests.add(new Test(5, 1000, 100));
-        tests.add(new Test(5, 5000, 100));
+        tests.add(new MyTest(5, 5000, 100));
         /*tests.add(new Test(5, 500, 1000));
         tests.add(new Test(5, 1000, 1000));
         tests.add(new Test(5, 5000, 1000));
@@ -51,9 +24,8 @@ public class SimulatorMain {
 
         int nTests = 20;
 
-        for(int i = 0; i < nTests; i++) {
-            for (Test test : tests) {
-                Simulator sim = new Simulator(test.nThread, test.iter, test.nBody);
+        for (int i = 0; i < nTests; i++) {
+            for (MyTest test : tests) {
                 test.addTime(sim.execute());
                 /*System.out.println("************************");
                 System.out.println("Prova con:"
@@ -64,7 +36,7 @@ public class SimulatorMain {
             }
         }
 
-        for (Test test : tests) {
+        for (MyTest test : tests) {
             System.out.println("************************");
             System.out.println("Prova con:"
                     + "\n\tN Thread:\t\t" + test.nThread
