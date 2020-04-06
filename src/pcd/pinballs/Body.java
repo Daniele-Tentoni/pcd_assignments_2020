@@ -14,7 +14,7 @@ public class Body {
     private double radius;
     private int index;
 
-    private boolean updated, collided, bounded;
+    private boolean updated, collided, viewed;
     private boolean velocityAvailable;
     private ReentrantLock mutex;
     private Condition velocityLock;
@@ -26,7 +26,7 @@ public class Body {
         this.index = index;
 
         /* Dispensatori di permessi. */
-        this.updated = this.collided = this.bounded = true;
+        this.updated = this.collided = this.viewed = true;
 
         /* Sincronizzatori. */
         this.velocityAvailable = true;
@@ -54,7 +54,7 @@ public class Body {
     public synchronized boolean takeUpdate() {
         if(this.updated) {
             this.updated = false;
-            this.bounded = true; // Rilascia gli altri permessi.
+            this.viewed = true; // Rilascia gli altri permessi.
             this.collided = true; // Occhio alle barriere.
             return true;
         }
@@ -80,9 +80,9 @@ public class Body {
      * Se non l'aveva nessuno, lo consegna al chiamante.
      * @return Il permesso di verificare le collisioni.
      */
-    public synchronized boolean takeBoundary() {
-        if(this.bounded) {
-            this.bounded = false;
+    public synchronized boolean takeViewer() {
+        if(this.viewed) {
+            this.viewed = false;
             this.updated = true; // Rilascia gli altri permessi.
             return true;
         }
