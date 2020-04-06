@@ -1,5 +1,7 @@
 package pcd.pinballs;
 
+import pcd.pinballs.worker.OldSimulator;
+
 import java.util.ArrayList;
 
 public class SimulatorMain {
@@ -26,6 +28,7 @@ public class SimulatorMain {
 
         for (int i = 0; i < nTests; i++) {
             for (MyTest test : tests) {
+                Simulator sim = new OldSimulator(test.nThread, test.iter, test.nBody);
                 test.addTime(sim.execute());
                 /*System.out.println("************************");
                 System.out.println("Prova con:"

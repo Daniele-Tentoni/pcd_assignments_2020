@@ -1,15 +1,10 @@
 package pcd.pinballs.worker;
 
-import pcd.pinballs.components.Boundary;
-
 public class Worker extends Thread {
-    protected long maxIteration;
-    protected Boundary bounds;
 
-    public Worker(int index, long maxIteration, Boundary bounds) {
+    public Worker(int index) {
+        super();
         this.setName("Worker " + index);
-        this.maxIteration = maxIteration;
-        this.bounds = bounds;
     }
 
     protected void log(long millis, String message) {

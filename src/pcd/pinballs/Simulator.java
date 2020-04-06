@@ -3,28 +3,29 @@ package pcd.pinballs;
 import pcd.pinballs.components.Boundary;
 import pcd.pinballs.components.Position;
 import pcd.pinballs.components.Velocity;
-import pcd.pinballs.worker.SimulatorWorker;
-import pcd.pinballs.worker.Worker;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.CyclicBarrier;
 
-public class Simulator {
+public abstract class Simulator {
     /* bodies in the field */
-    ArrayList<Body> bodies;
+    protected ArrayList<Body> bodies;
+    protected Boundary bounds;
+    protected int nIterations;
 
-    private ArrayList<Worker> workers;
-
-    public Simulator(int nThread, int maxIterations, int nBody) {
+    public Simulator(int maxIterations, int nBody) {
 
         /* initializing boundary and bodies */
         /* boundary of the field */
-        Boundary bounds = new Boundary(-1.0, -1.0, 1.0, 1.0);
+        bounds = new Boundary(-1.0, -1.0, 1.0, 1.0);
+        this.initBodies(nBody, bounds);
 
+        this.nIterations = maxIterations;
+    }
 
-        CyclicBarrier barrier = new CyclicBarrier(nThread);
+    public abstract long execute();
 
+    public void initBodies(int nBody, Boundary bounds) {
         /* test with 100 small bodies */
         Random rand = new Random(System.currentTimeMillis());
         bodies = new ArrayList<>();
@@ -38,31 +39,5 @@ public class Simulator {
             Body b = new Body(pos, vel, 0.01, i);
             bodies.add(b);
         }
-
-        workers = new ArrayList<>();
-        for(int i = 0; i < nThread; i++) {
-            workers.add(new SimulatorWorker(i, maxIterations, bounds, barrier, bodies));
-        }
-    }
-
-    public long execute() {
-
-        long start = System.currentTimeMillis();
-        /* Manda in esecuzione i workers. */
-        for(Worker worker: workers) {
-            worker.start();
-        }
-
-        for(Worker worker: workers) {
-            try {
-                worker.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        long end = System.currentTimeMillis();
-        return end - start;
-
     }
 }

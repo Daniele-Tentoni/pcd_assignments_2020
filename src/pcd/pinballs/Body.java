@@ -3,7 +3,6 @@ package pcd.pinballs;
 import pcd.pinballs.components.Boundary;
 import pcd.pinballs.components.Position;
 import pcd.pinballs.components.Velocity;
-import pcd.pinballs.worker.Worker;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;

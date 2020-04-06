@@ -8,18 +8,22 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class SimulatorWorker extends Worker {
+    private long maxIteration;
+    private Boundary bounds;
     private CyclicBarrier barrier;
     private ArrayList<Body> bodies;
 
     public SimulatorWorker(int index,
                            long maxIteration,
-                           Boundary boundaries,
+                           Boundary bounds,
                            CyclicBarrier barrier,
                            ArrayList<Body> bodies) {
-        super(index, maxIteration, boundaries);
+        super(index);
 
         this.barrier = barrier;
         this.bodies = bodies;
+        this.bounds = bounds;
+        this.maxIteration = maxIteration;
     }
 
     @Override
