@@ -23,6 +23,11 @@ public abstract class Simulator {
         this.nIterations = maxIterations;
     }
 
+    /**
+     * Non richiamare questo metodo direttamente, ma attraverso
+     * la startSimulation e la stop simulation nel caso di MVC.
+     * @return Tempo impiegato dall'esecuzione.
+     */
     public abstract long execute();
 
     public void initBodies(int nBody, Boundary bounds) {
@@ -39,5 +44,19 @@ public abstract class Simulator {
             Body b = new Body(pos, vel, 0.01, i);
             bodies.add(b);
         }
+    }
+
+    /**
+     * Avvia la simulazione.
+     */
+    public void startSimulation() {
+        this.execute();
+    }
+
+    /**
+     * Ferma la simulazione.
+     */
+    public void stopSimulation() {
+
     }
 }

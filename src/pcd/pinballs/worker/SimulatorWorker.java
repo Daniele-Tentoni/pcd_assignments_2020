@@ -1,7 +1,7 @@
 package pcd.pinballs.worker;
 
 import pcd.pinballs.Body;
-import pcd.pinballs.SimulationViewer;
+import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.components.Boundary;
 
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ public class SimulatorWorker extends Worker {
     private Boundary bounds;
     private CyclicBarrier barrier;
     private ArrayList<Body> bodies;
-    private SimulationViewer viewer;
+    private SimulatorViewer viewer;
 
     public SimulatorWorker(int index,
                            long maxIteration,
                            Boundary bounds,
                            CyclicBarrier barrier,
                            ArrayList<Body> bodies,
-                           SimulationViewer viewer) {
+                           SimulatorViewer viewer) {
         super(index);
 
         this.barrier = barrier;

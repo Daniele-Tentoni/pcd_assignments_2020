@@ -36,12 +36,12 @@ public class OldSimulator extends Simulator {
         long start = System.currentTimeMillis();
 
         /* Verifica con JPF. */
-        gov.nasa.jpf.vm.Verify.beginAtomic();
+        // gov.nasa.jpf.vm.Verify.beginAtomic();
         /* Manda in esecuzione i workers. */
         for(Worker worker: workers) {
             worker.start();
         }
-        gov.nasa.jpf.vm.Verify.endAtomic();
+        // gov.nasa.jpf.vm.Verify.endAtomic();
 
         for(Worker worker: workers) {
             try {

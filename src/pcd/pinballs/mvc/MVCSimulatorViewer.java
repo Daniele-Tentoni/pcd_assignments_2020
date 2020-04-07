@@ -1,35 +1,52 @@
-package pcd.pinballs;
+package pcd.pinballs.mvc;
 
+import pcd.pinballs.Body;
+import pcd.pinballs.SimulationViewer;
+import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.components.Position;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import javax.swing.*;
 
-/**
- * Simulation view
- * @author aricci
- *
- */
-public class SimulationViewer extends JFrame implements SimulatorViewer {
+public class MVCSimulatorViewer extends JFrame implements ActionListener, SimulatorViewer {
 
-    private VisualiserPanel panel;
+    private MVCController controller;
+    private SimulationViewer.VisualiserPanel panel;
 
     /**
      * Creates a view of the specified size (in pixels)
      * @param w
      * @param h
      */
-    public SimulationViewer(int w, int h){
+    public MVCSimulatorViewer(MVCController controller, int w, int h){
+        this.controller = controller;
+
+        /* Bottoni per start e stop */
+        JButton btnStart = new JButton("Start");
+        btnStart.addActionListener(this);
+
+        JButton btnStop = new JButton("Stop");
+        btnStop.addActionListener(this);
+
         setTitle("Bodies Simulation");
         setSize(w,h);
         setResizable(false);
-        panel = new VisualiserPanel(w,h);
-        getContentPane().add(panel);
+
+        JPanel panel = new JPanel();
+        panel.add(btnStart);
+        panel.add(btnStop);
+
+        setLayout(new BorderLayout());
+        getContentPane().add(panel, BorderLayout.NORTH);
+
+        panel = new SimulationViewer.VisualiserPanel(w,h);
+        getContentPane().add(panel, BorderLayout.CENTER);
+
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent ev){
                 System.exit(-1);
@@ -41,13 +58,16 @@ public class SimulationViewer extends JFrame implements SimulatorViewer {
         setVisible(true);
     }
 
-    public void display(ArrayList<Body> bodies, double vt, long iter){
+    @Override
+    public void display(ArrayList<Body> bodies, double vt, long iter) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
         try {
-            SwingUtilities.invokeAndWait(() -> {
-                panel.display(bodies, vt, iter);
-            });
+            controller.processEvent(e.getActionCommand());
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -95,4 +115,3 @@ public class SimulationViewer extends JFrame implements SimulatorViewer {
         }
     }
 }
-
