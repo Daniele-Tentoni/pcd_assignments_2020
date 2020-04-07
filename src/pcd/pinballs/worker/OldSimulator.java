@@ -6,6 +6,7 @@ import pcd.pinballs.Simulator;
 import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
 
+
 public class OldSimulator extends Simulator {
 
     private SimulationViewer viewer;
@@ -33,10 +34,14 @@ public class OldSimulator extends Simulator {
         double vt = 0;
 
         long start = System.currentTimeMillis();
+
+        /* Verifica con JPF. */
+        gov.nasa.jpf.vm.Verify.beginAtomic();
         /* Manda in esecuzione i workers. */
         for(Worker worker: workers) {
             worker.start();
         }
+        gov.nasa.jpf.vm.Verify.endAtomic();
 
         for(Worker worker: workers) {
             try {
