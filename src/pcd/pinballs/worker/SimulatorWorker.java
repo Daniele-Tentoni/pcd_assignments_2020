@@ -34,6 +34,11 @@ public class SimulatorWorker extends Worker {
         this.pauser = pauser;
     }
 
+    /**
+     * Ritorna l'iterazione corrente alla quale si trova il worker.
+     * Utile solamente ai fini di log del pauser attualmente.
+     * @return Iterazione corrente.
+     */
     public long getCurrentIter() {
         return this.iter;
     }
@@ -105,7 +110,6 @@ public class SimulatorWorker extends Worker {
             Body b = this.bodies.get(0);
             if (b.takeViewer()) { // Prendo la pallina se non l'ha già fatto un altro.
                 // log("Aggiorno la posizione di %d", b.getIndex());
-                //System.out.println("display");
                 viewer.display(bodies, vt, iter);
                 // log("Aggiornata la posizione di %d", b.getIndex());
             }

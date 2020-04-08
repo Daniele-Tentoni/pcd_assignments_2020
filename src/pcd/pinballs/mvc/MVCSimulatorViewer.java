@@ -1,7 +1,6 @@
 package pcd.pinballs.mvc;
 
 import pcd.pinballs.Body;
-import pcd.pinballs.SimulationViewer;
 import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.components.Position;
 
@@ -20,8 +19,8 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
 
     /**
      * Creates a view of the specified size (in pixels)
-     * @param w
-     * @param h
+     * @param w Width
+     * @param h Height
      */
     public MVCSimulatorViewer(MVCController controller, int w, int h){
         this.controller = controller;
@@ -62,9 +61,7 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
     public void display(ArrayList<Body> bodies, double vt, long iter) {
         try {
             System.out.println("Siamo all'iter: " + iter);
-            SwingUtilities.invokeAndWait(() -> {
-                panel.display(bodies, vt, iter);
-            });
+            SwingUtilities.invokeAndWait(() -> panel.display(bodies, vt, iter));
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -82,7 +79,6 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
         private ArrayList<Body> bodies = new ArrayList<>();
         private long nIter;
         private double vt;
-        private double energy;
 
         private long dx;
         private long dy;

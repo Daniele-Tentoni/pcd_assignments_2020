@@ -1,7 +1,6 @@
 package pcd.pinballs.mvc;
 
 import pcd.pinballs.Simulator;
-import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.worker.SimulatorWorker;
 import pcd.pinballs.worker.Worker;
 
@@ -10,7 +9,6 @@ import java.util.concurrent.CyclicBarrier;
 
 public class MVCSimulator extends Simulator {
 
-    private SimulatorViewer viewer;
     private ArrayList<Worker> workers;
     private Pauser pauser;
 
@@ -20,13 +18,7 @@ public class MVCSimulator extends Simulator {
                         MVCSimulatorViewer viewer) {
         super(nIter, nBodies);
 
-        this.viewer = viewer;
-        CyclicBarrier barrier = new CyclicBarrier(nThread);//, () -> {
-            /*if( Mi devo stoppare )
-                for(Worker worker: workers) {
-                    worker.interrupt();
-                }
-        });*/
+        CyclicBarrier barrier = new CyclicBarrier(nThread);
 
         pauser = new Pauser();
 
