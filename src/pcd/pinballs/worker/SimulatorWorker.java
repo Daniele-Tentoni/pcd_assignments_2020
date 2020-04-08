@@ -3,23 +3,26 @@ package pcd.pinballs.worker;
 import pcd.pinballs.Body;
 import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.components.Boundary;
+import pcd.pinballs.mvc.Pauser;
 
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class SimulatorWorker extends Worker {
-    private long maxIteration;
+    private long maxIteration, iter;
     private Boundary bounds;
     private CyclicBarrier barrier;
     private ArrayList<Body> bodies;
     private SimulatorViewer viewer;
+    private Pauser pauser;
 
     public SimulatorWorker(int index,
                            long maxIteration,
                            Boundary bounds,
                            CyclicBarrier barrier,
                            ArrayList<Body> bodies,
+                           Pauser pauser,
                            SimulatorViewer viewer) {
         super(index);
 
@@ -28,6 +31,11 @@ public class SimulatorWorker extends Worker {
         this.bounds = bounds;
         this.maxIteration = maxIteration;
         this.viewer = viewer;
+        this.pauser = pauser;
+    }
+
+    public long getCurrentIter() {
+        return this.iter;
     }
 
     @Override
@@ -39,9 +47,15 @@ public class SimulatorWorker extends Worker {
         double vt = 0;
         double dt = 0.1;
 
-        long iter = 0;
+        iter = 0;
 
         while (iter < this.maxIteration) {
+            try {
+                this.pauser.checkIfIsPaused(this);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                return;
+            }
             // log("*** INIZIO ITERAZIONE " + iter + " ***");
 
             /* compute bodies new pos */
@@ -91,6 +105,7 @@ public class SimulatorWorker extends Worker {
             Body b = this.bodies.get(0);
             if (b.takeViewer()) { // Prendo la pallina se non l'ha già fatto un altro.
                 // log("Aggiorno la posizione di %d", b.getIndex());
+                //System.out.println("display");
                 viewer.display(bodies, vt, iter);
                 // log("Aggiornata la posizione di %d", b.getIndex());
             }

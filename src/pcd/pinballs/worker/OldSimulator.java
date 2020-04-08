@@ -2,6 +2,7 @@ package pcd.pinballs.worker;
 
 import pcd.pinballs.SimulationViewer;
 import pcd.pinballs.Simulator;
+import pcd.pinballs.mvc.Pauser;
 
 import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
@@ -20,12 +21,13 @@ public class OldSimulator extends Simulator {
 
         this.viewer = viewer;
         CyclicBarrier barrier = new CyclicBarrier(nThread);
+        Pauser pauser = new Pauser();
 
         workers = new ArrayList<>();
         for(int i = 0; i < nThread; i++) {
             workers.add(
                     new SimulatorWorker(
-                            i, nIter, bounds, barrier, bodies, viewer));
+                            i, nIter, bounds, barrier, bodies, pauser, viewer));
         }
     }
 
@@ -53,5 +55,15 @@ public class OldSimulator extends Simulator {
 
         long end = System.currentTimeMillis();
         return end - start;
+    }
+
+    @Override
+    public void startSimulation() {
+        // Non fa nulla.
+    }
+
+    @Override
+    public void pauseSimulation() {
+        // Non fa nulla.
     }
 }

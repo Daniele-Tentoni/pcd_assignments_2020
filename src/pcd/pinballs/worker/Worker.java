@@ -1,6 +1,6 @@
 package pcd.pinballs.worker;
 
-public class Worker extends Thread {
+public abstract class Worker extends Thread {
 
     public Worker(int index) {
         super();

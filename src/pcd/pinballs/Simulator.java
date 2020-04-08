@@ -6,6 +6,8 @@ import pcd.pinballs.components.Velocity;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public abstract class Simulator {
     /* bodies in the field */
@@ -19,6 +21,7 @@ public abstract class Simulator {
         /* boundary of the field */
         bounds = new Boundary(-1.0, -1.0, 1.0, 1.0);
         this.initBodies(nBody, bounds);
+
 
         this.nIterations = maxIterations;
     }
@@ -49,14 +52,12 @@ public abstract class Simulator {
     /**
      * Avvia la simulazione.
      */
-    public void startSimulation() {
-        this.execute();
-    }
+    public abstract void startSimulation();
 
     /**
      * Ferma la simulazione.
      */
-    public void stopSimulation() {
+    public abstract void pauseSimulation();
 
-    }
+
 }

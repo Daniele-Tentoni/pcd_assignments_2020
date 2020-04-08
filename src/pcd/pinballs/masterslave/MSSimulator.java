@@ -4,6 +4,10 @@ import pcd.pinballs.Simulator;
 
 import java.util.ArrayList;
 
+/**
+ * Rappresenta la simulazione di un approccio più Master-Slave.
+ * Attualmente non viene usato e molti metodi non sono implementati.
+ */
 public class MSSimulator extends Simulator {
 
     private ArrayList<SlaveWorker> slaves;
@@ -36,5 +40,15 @@ public class MSSimulator extends Simulator {
 
         long end = System.currentTimeMillis();
         return end - start;
+    }
+
+    @Override
+    public void startSimulation() {
+        // Non fa nulla.
+    }
+
+    @Override
+    public void pauseSimulation() {
+        // Non fa nulla.
     }
 }

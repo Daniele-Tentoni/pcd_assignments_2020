@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MVCSimulatorViewer extends JFrame implements ActionListener, SimulatorViewer {
 
     private MVCController controller;
-    private SimulationViewer.VisualiserPanel panel;
+    private VisualiserPanel panel;
 
     /**
      * Creates a view of the specified size (in pixels)
@@ -44,8 +44,8 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
         setLayout(new BorderLayout());
         getContentPane().add(panel, BorderLayout.NORTH);
 
-        panel = new SimulationViewer.VisualiserPanel(w,h);
-        getContentPane().add(panel, BorderLayout.CENTER);
+        this.panel = new VisualiserPanel(w,h);
+        getContentPane().add(this.panel, BorderLayout.CENTER);
 
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent ev){
@@ -60,15 +60,21 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
 
     @Override
     public void display(ArrayList<Body> bodies, double vt, long iter) {
-
+        try {
+            System.out.println("Siamo all'iter: " + iter);
+            SwingUtilities.invokeAndWait(() -> {
+                panel.display(bodies, vt, iter);
+            });
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            controller.processEvent(e.getActionCommand());
-        } catch (Exception ex) {
-        }
+        // Prendere l'iterazione corrente.
+        System.out.println("** Premuto pulsante all'iter: " + panel.getIter());
+        controller.processEvent(e.getActionCommand());
     }
 
     public static class VisualiserPanel extends JPanel {
@@ -85,6 +91,10 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
             setSize(w,h);
             dx = w/2 - 20;
             dy = h/2 - 20;
+        }
+
+        public long getIter() {
+            return this.nIter;
         }
 
         public void paint(Graphics g){
