@@ -1,7 +1,7 @@
 package pcd.pinballs.mvc;
 
 import pcd.pinballs.Simulator;
-import pcd.pinballs.worker.SimulatorWorker;
+import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.worker.Worker;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class MVCSimulator extends Simulator {
     public MVCSimulator(int nThread,
                         int nIter,
                         int nBodies,
-                        MVCSimulatorViewer viewer) {
+                        SimulatorViewer viewer) {
         super(nIter, nBodies);
 
         CyclicBarrier barrier = new CyclicBarrier(nThread);
@@ -25,7 +25,7 @@ public class MVCSimulator extends Simulator {
         workers = new ArrayList<>();
         for (int i = 0; i < nThread; i++) {
             workers.add(
-                    new SimulatorWorker(
+                    new MVCSimulatorWorker(
                             i, nIter, bounds, barrier, bodies, pauser, viewer));
         }
     }
@@ -36,6 +36,12 @@ public class MVCSimulator extends Simulator {
         for(Worker worker: workers) {
             worker.start();
         }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.startSimulation();
         for(Worker worker: workers) {
             try {
                 worker.join();

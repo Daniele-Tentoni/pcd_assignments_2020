@@ -1,29 +1,37 @@
-package pcd.pinballs.worker;
+package pcd.pinballs.mvc;
 
 import pcd.pinballs.Body;
+import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.components.Boundary;
+import pcd.pinballs.worker.Worker;
 
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-public class SimulatorWorker extends Worker {
+public class MVCSimulatorWorker extends Worker {
     private long maxIteration, iter;
     private Boundary bounds;
     private CyclicBarrier barrier;
     private ArrayList<Body> bodies;
+    private SimulatorViewer viewer;
+    private Pauser pauser;
 
-    public SimulatorWorker(int index,
+    public MVCSimulatorWorker(int index,
                            long maxIteration,
                            Boundary bounds,
                            CyclicBarrier barrier,
-                           ArrayList<Body> bodies) {
+                           ArrayList<Body> bodies,
+                           Pauser pauser,
+                           SimulatorViewer viewer) {
         super(index);
 
         this.barrier = barrier;
         this.bodies = bodies;
         this.bounds = bounds;
         this.maxIteration = maxIteration;
+        this.viewer = viewer;
+        this.pauser = pauser;
     }
 
     /**
@@ -37,6 +45,7 @@ public class SimulatorWorker extends Worker {
 
     @Override
     public void run() {
+        this.log("Partito");
         /* simulation loop */
 
         /* init virtual time */
@@ -47,15 +56,21 @@ public class SimulatorWorker extends Worker {
         iter = 0;
 
         while (iter < this.maxIteration) {
+            try {
+                this.pauser.checkIfIsPaused();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                return;
+            }
             // log("*** INIZIO ITERAZIONE " + iter + " ***");
 
             /* compute bodies new pos */
 
             for (Body b : this.bodies) {
                 if (b.takeUpdate()) { // Prendo la pallina se non l'ha già fatto un altro.
-                    // log("Aggiorno la posizione di %d", b.getIndex());
+                    // log("Aggiorno la posizione di " + b.getIndex());
                     b.updatePos(dt);
-                    // log("Aggiornata la posizione di %d", b.getIndex());
+                    // log("Aggiornata la posizione di " + b.getIndex());
                 }
             }
 
@@ -90,6 +105,15 @@ public class SimulatorWorker extends Worker {
 
             vt = vt + dt;
             iter++;
+
+            /* display current stage */
+
+            Body b = this.bodies.get(0);
+            if (b.takeViewer()) { // Prendo la pallina se non l'ha già fatto un altro.
+                // log("Aggiorno la posizione di " + b.getIndex());
+                viewer.display(bodies, vt, iter);
+                // log("Aggiornata la posizione di %d", b.getIndex());
+            }
 
             try {
                 // log("Mi sto schiantando contro la barriera.");

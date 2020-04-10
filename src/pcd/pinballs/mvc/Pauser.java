@@ -1,7 +1,5 @@
 package pcd.pinballs.mvc;
 
-import pcd.pinballs.worker.SimulatorWorker;
-
 /**
  * Monitor che consente di mettere in pausa un thread chiamante
  * in attesa dell'arrivo di un altro che li svegli tutti.
@@ -17,13 +15,11 @@ public class Pauser {
      * Metodo da chiamare per capire se doversi fermare oppure no.
      * Finché lo stato del monitor sarà "in pausa", devo aspettare
      * che qualcuno mi venga a svegliare.
-     * @param worker Worker che richiama questo metodo per log.
      * @throws InterruptedException Lanciata quando si interrompe il thread
      * mentre si trova nello stato di attesa.
      */
-    public synchronized void checkIfIsPaused(SimulatorWorker worker) throws InterruptedException {
+    public synchronized void checkIfIsPaused() throws InterruptedException {
         while(this.paused) {
-            // worker.log("Mi sono fermato all'iter " + worker.getCurrentIter());
             this.wait();
         }
     }
@@ -38,7 +34,8 @@ public class Pauser {
 
     /**
      * Mette lo stato a false, così che i thread che chiamino isPaused
-     * non si mettano in attesa.
+     * non si mettano in attesa. Inoltre sveglia anche tutti coloro che
+     * sono in attesa di essere svegliati dalla pausa.
      */
     public synchronized void goWake() {
         this.paused = false;
