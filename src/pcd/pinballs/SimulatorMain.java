@@ -11,10 +11,10 @@ public class SimulatorMain {
         int nTests = 1;
         ArrayList<MyTest> testsOld = new ArrayList<>();
 
-        testsOld.add(new MyTest(1, 500, 100));
-        testsOld.add(new MyTest(5, 500, 100));
-        testsOld.add(new MyTest(1, 1000, 100));
-        testsOld.add(new MyTest(5, 1000, 100));
+        testsOld.add(new MyTest(3, 10, 10));
+        //testsOld.add(new MyTest(3, 500, 100));
+        //testsOld.add(new MyTest(1, 1000, 100));
+        /*testsOld.add(new MyTest(5, 1000, 100));
         testsOld.add(new MyTest(1, 5000, 100));
         testsOld.add(new MyTest(5, 5000, 100));
         testsOld.add(new MyTest(1, 500, 1000));
@@ -28,7 +28,7 @@ public class SimulatorMain {
         testsOld.add(new MyTest(1, 1000, 5000));
         testsOld.add(new MyTest(5, 1000, 5000));
         testsOld.add(new MyTest(1, 5000, 5000));
-        testsOld.add(new MyTest(5, 5000, 5000));
+        testsOld.add(new MyTest(5, 5000, 5000));*/
 
         for (int i = 0; i < nTests; i++) {
             for (MyTest test : testsOld) {

@@ -49,7 +49,7 @@ public class MVCSimulator extends Simulator {
         //for (int i = 0; i<= workers.size();i++){
         //MVCSimulatorWorker wk = .get(1);
         //}
-        assert ( 11 == 10);
+        //assert ( 11 == 10);
         for(Worker worker: workers) {
             try {
                 worker.join();

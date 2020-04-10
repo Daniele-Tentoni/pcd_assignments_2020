@@ -38,6 +38,8 @@ public class OldSimulator extends Simulator {
         }
         Verify.endAtomic();
 
+        //assert (11== 10);
+
 
         for(Worker worker: workers) {
             try {
