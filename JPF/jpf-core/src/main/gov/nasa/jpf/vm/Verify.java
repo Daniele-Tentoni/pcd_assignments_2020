@@ -69,7 +69,7 @@ public class Verify {
   public static int getCounter (int id) {
     if (peer != null) {
       // this is executed if we are in a JPF context
-      return gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.getCounter__I__I(null, 0, id);
+      return JPF_gov_nasa_jpf_vm_Verify.getCounter__I__I(null, 0, id);
     } else {
       if (counter == null) {
         counter = new int[id >= MAX_COUNTERS ? (id+1) : MAX_COUNTERS];
@@ -84,7 +84,7 @@ public class Verify {
 
   public static void resetCounter (int id) {
     if (peer != null){
-      gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.resetCounter__I__V(null, 0, id);
+      JPF_gov_nasa_jpf_vm_Verify.resetCounter__I__V(null, 0, id);
     } else {
       if ((counter != null) && (id >= 0) && (id < counter.length)) {
         counter[id] = 0;
@@ -94,7 +94,7 @@ public class Verify {
 
   public static void setCounter (int id, int val) {
     if (peer != null){
-      gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.setCounter__II__V(null, 0, id, val);
+      JPF_gov_nasa_jpf_vm_Verify.setCounter__II__V(null, 0, id, val);
     } else {
       if ((counter != null) && (id >= 0) && (id < counter.length)) {
         counter[id] = val;
@@ -105,7 +105,7 @@ public class Verify {
   
   public static int incrementCounter (int id) {
     if (peer != null){
-      return gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.incrementCounter__I__I(null, 0, id);
+      return JPF_gov_nasa_jpf_vm_Verify.incrementCounter__I__I(null, 0, id);
     } else {
       if (counter == null) {
         counter = new int[(id >= MAX_COUNTERS) ? id+1 : MAX_COUNTERS];
@@ -156,7 +156,7 @@ public class Verify {
   public static void setBitInBitSet(int id, int bit, boolean value) {
     if (peer != null){
       // this is executed if we did run JPF
-      gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.setBitInBitSet__IIZ__V(null, 0, id, bit, value);
+      JPF_gov_nasa_jpf_vm_Verify.setBitInBitSet__IIZ__V(null, 0, id, bit, value);
     } else {
       // this is executed if we run this without previously executing JPF
       checkBitSetId(id);
@@ -167,7 +167,7 @@ public class Verify {
   public static boolean getBitInBitSet(int id, int bit) {
     if (peer != null){
       // this is executed if we did run JPF
-      return gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify.getBitInBitSet__II__Z(null, 0, id, bit);
+      return JPF_gov_nasa_jpf_vm_Verify.getBitInBitSet__II__Z(null, 0, id, bit);
 
     } else {
       // this is executed if we run this without previously executing JPF

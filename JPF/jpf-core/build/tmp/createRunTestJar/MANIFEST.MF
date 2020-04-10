@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Implementation-Title: Java Pathfinder test launch system
-Implementation-Version: ae2cb8270b29f4adc74c017d353149684b521377
-Built-By: Daniele
-Specification-Version: ae2cb82
+Implementation-Version: e734381a6e606354034111dc855be9a8e454ce71
+Built-By: aricci
+Specification-Version: JPF-8.0
 Main-Class: gov.nasa.jpf.tool.RunTest
 Implementation-Vendor: NASA Ames Research Center
 

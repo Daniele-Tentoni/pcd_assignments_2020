@@ -1,5 +1,6 @@
 package pcd.pinballs.mvc;
 
+import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Simulator;
 import pcd.pinballs.SimulatorViewer;
 import pcd.pinballs.worker.Worker;
@@ -27,12 +28,14 @@ public class MVCSimulator extends Simulator {
             workers.add(
                     new MVCSimulatorWorker(
                             i, nIter, bounds, barrier, bodies, pauser, viewer));
+
         }
+
     }
 
     @Override
     public long execute() {
-
+        Verify.beginAtomic();
         for(Worker worker: workers) {
             worker.start();
         }
@@ -42,6 +45,11 @@ public class MVCSimulator extends Simulator {
             e.printStackTrace();
         }
         this.startSimulation();
+        Verify.endAtomic();
+        //for (int i = 0; i<= workers.size();i++){
+        //MVCSimulatorWorker wk = .get(1);
+        //}
+        assert ( 11 == 10);
         for(Worker worker: workers) {
             try {
                 worker.join();
@@ -49,9 +57,9 @@ public class MVCSimulator extends Simulator {
                 e.printStackTrace();
             }
         }
-
         return 0;
     }
+
 
     @Override
     public void startSimulation() {

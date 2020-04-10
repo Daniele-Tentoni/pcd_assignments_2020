@@ -68,16 +68,16 @@ public class MVCSimulatorWorker extends Worker {
 
             for (Body b : this.bodies) {
                 if (b.takeUpdate()) { // Prendo la pallina se non l'ha già fatto un altro.
-                    // log("Aggiorno la posizione di " + b.getIndex());
+                    //log("Aggiorno la posizione di " + b.getIndex());
                     b.updatePos(dt);
-                    // log("Aggiornata la posizione di " + b.getIndex());
+                    //log("Aggiornata la posizione di " + b.getIndex());
                 }
             }
 
             try {
                 // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
-                // log("***___ Ho superato la barriera update " + iter + " ___***");
+                //log("***___ Ho superato la barriera update " + iter + " ___***");
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
@@ -118,11 +118,14 @@ public class MVCSimulatorWorker extends Worker {
             try {
                 // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
-                // log("***___ Ho superato la barriera boundary " + iter + " ___***");
+                //log("***___ Ho superato la barriera boundary " + iter + " ___***");
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
 
         }
+    }
+    public void getIter(){
+        //return this.iter;
     }
 }

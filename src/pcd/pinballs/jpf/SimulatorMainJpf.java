@@ -5,18 +5,20 @@ import pcd.pinballs.mvc.MVCSimulator;
 
 public class SimulatorMainJpf {
     public static void main(String[] args) {
-        BounderViewBuffer buffer = new BounderViewBuffer(100);
+        BounderViewBuffer buffer = new BounderViewBuffer(10);
         SimulationViewerJpf viewer = new SimulationViewerJpf(buffer);
-        ViewWorker view = new ViewWorker(5, 1000, buffer);
-        Simulator sim = new MVCSimulator(4, 1000, 1000, viewer);
+        ViewWorker view = new ViewWorker(3, 100, buffer);
+        Simulator sim = new MVCSimulator(2, 100, 100, viewer);
 
         view.start();
-        long time = sim.execute();
+        long start = System.currentTimeMillis();
+        sim.execute();
         try {
             view.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Time: " + time);
+        long stop = System.currentTimeMillis();
+        System.out.println("Time: " + (stop - start));
     }
 }
