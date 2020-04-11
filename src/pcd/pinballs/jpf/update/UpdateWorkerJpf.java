@@ -34,29 +34,42 @@ public class UpdateWorkerJpf extends Worker {
         iter = 0;
 
         while (iter < this.maxIteration) {
-            // log("*** INIZIO ITERAZIONE " + iter + " ***");
-
             /* compute bodies new pos */
-
             for (Body b : this.bodies) {
-                /* Verifica con JPF. */
-                // Verify.beginAtomic();
-
+                /*
+                 Mettiamo begin/end Atomic per controllare la proprietà sottostante
+                 solamente prima e dopo aver risolto tutte le operazioni comprese.
+                 */
+                Verify.beginAtomic();
                 if (b.takeUpdate()) { // Prendo la pallina se non l'ha già fatto un altro.
-                    // log("Aggiorno la posizione di %d", b.getIndex());
+                    b.incrementIter();
                     b.updatePos(dt);
-                    // log("Aggiornata la posizione di %d", b.getIndex());
                 }
+                Verify.endAtomic();
 
-                // Verify.endAtomic();
-                assert (b.getCurrentIter() <= this.iter && b.isUpdated()) ||
-                        (b.getCurrentIter() > this.iter && !b.isUpdated());
+                /*
+                 Questa proprietà controlla che nessuna pallina si trovi ad una iterazione
+                 diversa da quella corrente prima dell'update e in una iterazione diversa
+                 da quella successiva dopo l'update.
+                 */
+                assert (b.getCurrentIter() == this.iter && b.isUpdated()) ||
+                        (b.getCurrentIter() == this.iter + 1 && !b.isUpdated());
             }
 
             try {
-                // log("Mi sto schiantando contro la barriera.");
                 barrier.await();
-                // log("***___ Ho superato la barriera update " + iter + " ___***");
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+
+            for (Body b : this.bodies) {
+                // Restituisce il permesso di update alla pallina.
+                b.takeCollide();
+            }
+            iter++;
+
+            try {
+                barrier.await();
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }

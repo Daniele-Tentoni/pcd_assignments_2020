@@ -16,12 +16,10 @@ public abstract class Simulator {
     protected int nIterations;
 
     public Simulator(int maxIterations, int nBody) {
-
         /* initializing boundary and bodies */
         /* boundary of the field */
         bounds = new Boundary(-1.0, -1.0, 1.0, 1.0);
         this.initBodies(nBody, bounds);
-
 
         this.nIterations = maxIterations;
     }

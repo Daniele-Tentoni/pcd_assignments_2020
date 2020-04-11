@@ -52,6 +52,10 @@ public class Body {
         return this.iter;
     }
 
+    public void incrementIter() {
+        this.iter++;
+    }
+
     /**
      * Prende il diritto sull'aggiornamento della posizione.
      * Se non l'aveva nessuno, lo consegna al chiamante.
@@ -59,7 +63,6 @@ public class Body {
      */
     public synchronized boolean takeUpdate() {
         if(this.updated) {
-            this.iter++;
             this.updated = false;
             this.viewed = true; // Rilascia gli altri permessi.
             this.collided = true; // Occhio alle barriere.
@@ -84,7 +87,6 @@ public class Body {
      */
     public synchronized boolean takeCollide() {
         if (this.collided) {
-            this.iter++;
             this.collided = false;
             this.updated = true; // Occhio alle barriere.
             return true;

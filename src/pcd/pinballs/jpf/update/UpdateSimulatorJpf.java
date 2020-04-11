@@ -11,8 +11,8 @@ public class UpdateSimulatorJpf extends Simulator {
     private ArrayList<UpdateWorkerJpf> workers;
 
     public UpdateSimulatorJpf(int nThread,
-                        int nIter,
-                        int nBodies) {
+                              int nIter,
+                              int nBodies) {
         super(nIter, nBodies);
 
         CyclicBarrier barrier = new CyclicBarrier(nThread);
@@ -27,18 +27,10 @@ public class UpdateSimulatorJpf extends Simulator {
 
     @Override
     public long execute() {
-        // long start = System.currentTimeMillis();
-
         /* Manda in esecuzione i workers. */
         for(Worker worker: workers) {
             worker.start();
         }
-
-        for(UpdateWorkerJpf worker: workers) {
-            // assert worker.getCurrentIter() >= 0;
-            // assert this.nIterations == worker.getCurrentIter();
-        }
-
 
         for(Worker worker: workers) {
             try {
@@ -48,8 +40,6 @@ public class UpdateSimulatorJpf extends Simulator {
             }
         }
 
-        // long end = System.currentTimeMillis();
-        //assert end - start < 100;
         return 0;
     }
 
