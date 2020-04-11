@@ -121,12 +121,11 @@ public class Body {
         return pos;
     }
 
-    public Velocity getVel(Worker worker) throws InterruptedException {
+    public Velocity getVel() throws InterruptedException {
         try{
             mutex.lock();
 
             while(!this.velocityAvailable) {
-                worker.log("Velocità ferma " + this.index);
                 this.velocityLock.await();
             }
 
@@ -219,12 +218,12 @@ public class Body {
         }
     }
 
-    public static void solveCollision(Body b1, Body b2, Worker worker) {
+    public static void solveCollision(Body b1, Body b2) {
         try {
             Position x1 = b1.getPos();
             Position x2 = b2.getPos();
-            Velocity v1 = b1.getVel(worker);
-            Velocity v2 = b2.getVel(worker);
+            Velocity v1 = b1.getVel();
+            Velocity v2 = b2.getVel();
 
             double x12dx = x1.getX() - x2.getX();
             double x12dy = x1.getY() - x2.getY();

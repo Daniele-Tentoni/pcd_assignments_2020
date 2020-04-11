@@ -32,11 +32,12 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
         JButton btnStop = new JButton("Stop");
         btnStop.addActionListener(this);
 
-        setTitle("Bodies Simulation");
-        setSize(w,h);
+        setTitle("Pinballs: Bodies Simulation");
+        setSize(w, h + 40);
         setResizable(false);
 
         JPanel panel = new JPanel();
+        panel.setSize(40, 40);
         panel.add(btnStart);
         panel.add(btnStop);
 
@@ -60,7 +61,6 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
     @Override
     public void display(ArrayList<Body> bodies, double vt, long iter) {
         try {
-            System.out.println("Siamo all'iter: " + iter);
             SwingUtilities.invokeAndWait(() -> panel.display(bodies, vt, iter));
         } catch (Exception ex){
             ex.printStackTrace();
@@ -70,7 +70,6 @@ public class MVCSimulatorViewer extends JFrame implements ActionListener, Simula
     @Override
     public void actionPerformed(ActionEvent e) {
         // Prendere l'iterazione corrente.
-        System.out.println("** Premuto pulsante all'iter: " + panel.getIter());
         controller.processEvent(e.getActionCommand());
     }
 

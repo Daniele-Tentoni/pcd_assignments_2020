@@ -8,10 +8,23 @@ public class SimulatorMain {
 
     public static void main(String[] args) {
 
-        int nTests = 1;
+        int nTests = 20;
         ArrayList<MyTest> testsOld = new ArrayList<>();
 
-        testsOld.add(new MyTest(3, 10, 10));
+        /*testsOld.add(new MyTest(2, 100, 100));
+        testsOld.add(new MyTest(3, 100, 100));
+        testsOld.add(new MyTest(4, 100, 100));
+        testsOld.add(new MyTest(5, 100, 100));
+        testsOld.add(new MyTest(6, 100, 100));
+        testsOld.add(new MyTest(7, 100, 100));*/
+        testsOld.add(new MyTest(8, 100, 100));
+        testsOld.add(new MyTest(9, 100, 100));
+        testsOld.add(new MyTest(10, 100, 100));
+        testsOld.add(new MyTest(11, 100, 100));
+        testsOld.add(new MyTest(12, 100, 100));
+        testsOld.add(new MyTest(13, 100, 100));/*
+        testsOld.add(new MyTest(14, 100, 100));
+        testsOld.add(new MyTest(15, 100, 100));
         //testsOld.add(new MyTest(3, 500, 100));
         //testsOld.add(new MyTest(1, 1000, 100));
         /*testsOld.add(new MyTest(5, 1000, 100));
@@ -50,19 +63,19 @@ public class SimulatorMain {
         System.out.println("Prova con:");
         System.out.print("\n\tN Thread:");
         for (MyTest test : testsOld) {
-            System.out.print("\t|\t" + test.nThread);
+            System.out.print("\t\t|\t\t" + test.nThread);
         }
         System.out.print("\n\tN Iter:\t");
         for (MyTest test : testsOld) {
-            System.out.print("\t|\t" + test.iter);
+            System.out.print("\t\t|\t\t" + test.iter);
         }
         System.out.print("\n\tN Body:\t");
         for (MyTest test : testsOld) {
-            System.out.print("\t|\t" + test.nBody);
+            System.out.print("\t\t|\t\t" + test.nBody);
         }
-        System.out.print("\n\tMedia:\t");
+        System.out.print("\n\tMedia:\t\t");
         for (MyTest test : testsOld) {
-            System.out.print("\t|\t" + test.getTimesAverage());
+            System.out.print("\t|\t\t" + test.getTimesAverage());
         }
         System.out.println("\n************************");
     }

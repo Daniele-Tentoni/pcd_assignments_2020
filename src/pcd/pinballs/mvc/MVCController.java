@@ -14,13 +14,9 @@ public class MVCController {
             new Thread(() -> {
                 try {
                     if(event.equals("Start")) {
-                        System.out.println("[Controller] Start simulation.");
                         this.simulator.startSimulation();
-                        Thread.sleep(1000);
                     } else if (event.equals("Stop")) {
-                        System.out.println("[Controller] Stop simulation.");
                         this.simulator.pauseSimulation();
-                        Thread.sleep(1000);
                     }
                 } catch (Exception ex){
                     ex.printStackTrace();

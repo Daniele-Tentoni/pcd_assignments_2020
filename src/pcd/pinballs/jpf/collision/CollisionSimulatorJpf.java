@@ -12,8 +12,8 @@ public class CollisionSimulatorJpf extends Simulator {
     private ArrayList<CollisionWorkerJpf> workers;
 
     public CollisionSimulatorJpf(int nThread,
-                        int nIter,
-                        int nBodies) {
+                                 int nIter,
+                                 int nBodies) {
         super(nIter, nBodies);
 
         CyclicBarrier barrier = new CyclicBarrier(nThread);

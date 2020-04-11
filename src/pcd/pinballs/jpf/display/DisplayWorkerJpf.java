@@ -9,16 +9,16 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class DisplayWorkerJpf extends Worker {
-    private long maxIteration;
+    private long maxIteration, iter;
     private CyclicBarrier barrier;
     private ArrayList<Body> bodies;
-    private SimulatorViewer viewer;
+    private SimulationViewerJpf viewer;
 
     public DisplayWorkerJpf(int index,
                               long maxIteration,
                               CyclicBarrier barrier,
                               ArrayList<Body> bodies,
-                              SimulatorViewer viewer) {
+                            SimulationViewerJpf viewer) {
         super(index);
 
         this.barrier = barrier;
@@ -27,16 +27,20 @@ public class DisplayWorkerJpf extends Worker {
         this.viewer = viewer;
     }
 
+    public long getCurrentIter() {
+        return this.iter;
+    }
+
     @Override
     public void run() {
         /* init virtual time */
         double vt = 0;
         double dt = 0.1;
-        long iter = 0;
+        iter = 0;
         while (iter < this.maxIteration) {
             /* update virtual time */
-            vt = vt + dt;
             iter++;
+            vt = vt + dt;
 
             /* display current stage */
             Body b = this.bodies.get(0);
@@ -50,6 +54,13 @@ public class DisplayWorkerJpf extends Worker {
                 e.printStackTrace();
             }
 
+            this.bodies.get(0).takeUpdate();
+
+            try {
+                barrier.await();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

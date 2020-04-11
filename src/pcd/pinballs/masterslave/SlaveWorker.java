@@ -40,7 +40,7 @@ public class SlaveWorker extends Worker {
             Pair<Body, Body> pair;
             while((pair = this.master.getBodiesToCollide(this)) != null) {
                 if(pair.getKey().collideWith(pair.getValue()))
-                    Body.solveCollision(pair.getKey(), pair.getValue(), this);
+                    Body.solveCollision(pair.getKey(), pair.getValue());
             }
 
             while ((body = this.master.getBodyToCollideWithBounds(this)) != null) {
@@ -48,12 +48,6 @@ public class SlaveWorker extends Worker {
             }
 
             this.master.syncSlaves(this);
-
-            /*while ((body = this.master.getBodyToView(this)) != null) {
-                // TODO: Secondo step.
-                log("Dovrei aggiornare la gui per " + body.getIndex());
-            }*/
         }
-
     }
 }

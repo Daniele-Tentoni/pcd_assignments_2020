@@ -1,8 +1,6 @@
 package pcd.pinballs.worker;
 
-import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Simulator;
-import pcd.pinballs.mvc.MVCSimulatorWorker;
 
 import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
@@ -28,22 +26,12 @@ public class OldSimulator extends Simulator {
     }
 
     public long execute() {
-
         long start = System.currentTimeMillis();
 
-        /* Verifica con JPF. */
-        Verify.beginAtomic();
         /* Manda in esecuzione i workers. */
         for(Worker worker: workers) {
             worker.start();
         }
-        Verify.endAtomic();
-
-        for(SimulatorWorker worker: workers) {
-            assert worker.getCurrentIter() >= 0;
-            // assert this.nIterations == worker.getCurrentIter();
-        }
-
 
         for(Worker worker: workers) {
             try {
@@ -54,17 +42,12 @@ public class OldSimulator extends Simulator {
         }
 
         long end = System.currentTimeMillis();
-        //assert end - start < 100;
         return end - start;
     }
 
     @Override
-    public void startSimulation() {
-        // Non fa nulla.
-    }
+    public void startSimulation() {}
 
     @Override
-    public void pauseSimulation() {
-        // Non fa nulla.
-    }
+    public void pauseSimulation() {}
 }

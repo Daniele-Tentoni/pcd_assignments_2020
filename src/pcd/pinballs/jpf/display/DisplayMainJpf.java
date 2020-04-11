@@ -1,20 +1,11 @@
 package pcd.pinballs.jpf.display;
 
-import pcd.pinballs.Simulator;
 
 public class DisplayMainJpf {
     public static void main(String[] args) {
-        BounderViewBuffer buffer = new BounderViewBuffer(10);
+        BounderViewBuffer buffer = new BounderViewBuffer(2);
         SimulationViewerJpf viewer = new SimulationViewerJpf(buffer);
-        ViewWorker view = new ViewWorker(3, 10, buffer);
-        Simulator sim = new DisplaySimulatorJpf(2, 3, 3, viewer);
-
-        view.start();
+        DisplaySimulatorJpf sim = new DisplaySimulatorJpf(1, 3, 3, viewer, buffer);
         sim.execute();
-        try {
-            view.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

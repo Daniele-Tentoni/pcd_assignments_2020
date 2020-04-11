@@ -2,9 +2,12 @@ package pcd.pinballs.jpf.display;
 
 import pcd.pinballs.worker.Worker;
 
+/**
+ * Worker che deve simulare l'EDT per il test con Jpf.
+ */
 public class ViewWorker extends Worker {
     private BounderViewBuffer buffer;
-    private long maxIter;
+    private long maxIter, iter;
 
     public ViewWorker(int index, long maxIter, BounderViewBuffer buffer) {
         super(index);
@@ -14,13 +17,18 @@ public class ViewWorker extends Worker {
         this.maxIter = maxIter;
     }
 
+    public long getCurrentIter() {
+        return this.iter;
+    }
+
     @Override
     public void run() {
-        long iter = 0;
+        iter = 0;
         while(iter < maxIter) {
             try {
+                this.buffer.get();
                 iter++;
-                Thread.sleep(0);
+                Thread.sleep(0, 1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
