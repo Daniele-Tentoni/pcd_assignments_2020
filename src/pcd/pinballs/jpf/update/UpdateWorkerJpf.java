@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.update;
 
 import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Body;
@@ -40,7 +40,7 @@ public class UpdateWorkerJpf extends Worker {
 
             for (Body b : this.bodies) {
                 /* Verifica con JPF. */
-                Verify.beginAtomic();
+                // Verify.beginAtomic();
 
                 if (b.takeUpdate()) { // Prendo la pallina se non l'ha già fatto un altro.
                     // log("Aggiorno la posizione di %d", b.getIndex());
@@ -48,7 +48,7 @@ public class UpdateWorkerJpf extends Worker {
                     // log("Aggiornata la posizione di %d", b.getIndex());
                 }
 
-                Verify.endAtomic();
+                // Verify.endAtomic();
                 assert (b.getCurrentIter() <= this.iter && b.isUpdated()) ||
                         (b.getCurrentIter() > this.iter && !b.isUpdated());
             }

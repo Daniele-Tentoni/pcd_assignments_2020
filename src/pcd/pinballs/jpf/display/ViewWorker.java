@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.display;
 
 import pcd.pinballs.worker.Worker;
 
@@ -16,12 +16,9 @@ public class ViewWorker extends Worker {
 
     @Override
     public void run() {
-        // this.log("Partito");
-        // this.log("iter");
         long iter = 0;
         while(iter < maxIter) {
             try {
-                // this.log("Uso risorsa grafica " + this.buffer.get());
                 iter++;
                 Thread.sleep(0);
             } catch (InterruptedException e) {

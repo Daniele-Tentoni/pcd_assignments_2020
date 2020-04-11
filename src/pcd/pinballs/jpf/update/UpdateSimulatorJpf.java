@@ -1,6 +1,5 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.update;
 
-import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Simulator;
 import pcd.pinballs.worker.Worker;
 

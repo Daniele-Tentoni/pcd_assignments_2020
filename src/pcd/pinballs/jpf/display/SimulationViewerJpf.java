@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.display;
 
 import pcd.pinballs.Body;
 import pcd.pinballs.SimulatorViewer;
@@ -15,9 +15,6 @@ public class SimulationViewerJpf implements SimulatorViewer {
     @Override
     public void display(ArrayList<Body> bodies, double vt, long iter) {
         try {
-            // synchronized (System.out){
-            //     System.out.println("Metto " + iter);
-            // }
             this.buffer.put(iter);
         } catch (InterruptedException e) {
             e.printStackTrace();

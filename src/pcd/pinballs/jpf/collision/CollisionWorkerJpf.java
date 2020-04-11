@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.collision;
 
 import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Body;
@@ -42,8 +42,6 @@ public class CollisionWorkerJpf extends Worker {
         iter = 0;
         while (iter < this.maxIteration) {
             for (int i = 0; i < bodies.size(); i++) {
-                /* Verifica con JPF. */
-                Verify.beginAtomic();
                 Body b1 = bodies.get(i);
                 if (b1.takeCollide()) {
                     for (int j = i + 1; j < bodies.size(); j++) {
@@ -51,14 +49,12 @@ public class CollisionWorkerJpf extends Worker {
                         if (b1.collideWith(b2)) {
                             Body.solveCollision(b1, b2, this);
                         }
+
+                        assert b1.getCurrentIter() >= b2.getCurrentIter();
                     }
 
                     b1.checkAndSolveBoundaryCollision(this.bounds);
                 }
-                Verify.endAtomic();
-
-                assert (b1.getCurrentIter() <= this.iter && b1.isCollided()) ||
-                        (b1.getCurrentIter() > this.iter && !b1.isCollided());
             }
 
             iter++;

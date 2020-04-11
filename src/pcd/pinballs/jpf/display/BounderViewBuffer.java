@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.display;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

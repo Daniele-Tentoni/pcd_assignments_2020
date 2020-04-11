@@ -1,4 +1,4 @@
-package pcd.pinballs.jpf;
+package pcd.pinballs.jpf.collision;
 
 import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Simulator;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
 
 public class CollisionSimulatorJpf extends Simulator {
-    private ArrayList<SimulatorWorker> workers;
+    private ArrayList<CollisionWorkerJpf> workers;
 
     public CollisionSimulatorJpf(int nThread,
                         int nIter,
@@ -21,7 +21,7 @@ public class CollisionSimulatorJpf extends Simulator {
         workers = new ArrayList<>();
         for(int i = 0; i < nThread; i++) {
             workers.add(
-                    new SimulatorWorker(
+                    new CollisionWorkerJpf(
                             i, nIter, bounds, barrier, bodies));
         }
     }
