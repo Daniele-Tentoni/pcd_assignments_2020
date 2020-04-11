@@ -7,6 +7,11 @@ import java.util.ArrayList;
 /**
  * Rappresenta la simulazione di un approccio più Master-Slave.
  * Attualmente non viene usato e molti metodi non sono implementati.
+ * Rappresenta un tentativo fallimentare di aumentare le prestazioni.
+ * Dai nostri test abbiamo calcolato che ci mette fino a 10 volte tanto
+ * per eseguire le stesse operazioni. Sarebbe stato necessario lavorarci
+ * di più per ottimizzarlo, ma abbiamo preferito continuare a lavorare
+ * sull'altro approccio, già più veloce.
  */
 public class MSSimulator extends Simulator {
 

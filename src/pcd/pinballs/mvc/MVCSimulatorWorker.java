@@ -45,7 +45,6 @@ public class MVCSimulatorWorker extends Worker {
 
     @Override
     public void run() {
-        this.log("Partito");
         /* simulation loop */
 
         /* init virtual time */
@@ -124,8 +123,5 @@ public class MVCSimulatorWorker extends Worker {
             }
 
         }
-    }
-    public void getIter(){
-        //return this.iter;
     }
 }

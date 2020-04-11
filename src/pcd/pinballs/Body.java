@@ -13,6 +13,7 @@ public class Body {
     private volatile Velocity vel;
     private double radius;
     private int index;
+    private long iter;
 
     private boolean updated, collided, viewed;
     private boolean velocityAvailable;
@@ -24,6 +25,7 @@ public class Body {
         this.vel = vel;
         this.radius = radius;
         this.index = index;
+        this.iter = 0;
 
         /* Dispensatori di permessi. */
         this.updated = this.collided = this.viewed = true;
@@ -46,6 +48,10 @@ public class Body {
         return this.index;
     }
 
+    public long getCurrentIter() {
+        return this.iter;
+    }
+
     /**
      * Prende il diritto sull'aggiornamento della posizione.
      * Se non l'aveva nessuno, lo consegna al chiamante.
@@ -53,6 +59,7 @@ public class Body {
      */
     public synchronized boolean takeUpdate() {
         if(this.updated) {
+            this.iter++;
             this.updated = false;
             this.viewed = true; // Rilascia gli altri permessi.
             this.collided = true; // Occhio alle barriere.
@@ -62,17 +69,36 @@ public class Body {
     }
 
     /**
+     * Metodo usato solamente per il controllo del modello concorrente
+     * tramite jpf.
+     * @return True se è aggiornata, false altrimenti.
+     */
+    public boolean isUpdated() {
+        return this.updated;
+    }
+
+    /**
      * Prende il diritto sulla collisione con altri corpi.
      * Se non l'aveva nessuno, lo consegna al chiamante.
      * @return Il permesso di verificare le collisioni.
      */
     public synchronized boolean takeCollide() {
         if (this.collided) {
+            this.iter++;
             this.collided = false;
             this.updated = true; // Occhio alle barriere.
             return true;
         }
         return false;
+    }
+
+    /**
+     * Metodo usato solamente per il controllo del modello concorrente
+     * tramite jpf.
+     * @return True se è già stata fatta collidere, false altrimenti.
+     */
+    public boolean isCollided() {
+        return this.collided;
     }
 
     /**
@@ -90,19 +116,7 @@ public class Body {
     }
 
     public synchronized Position getPos() {
-        // try {
-            // mutex.lock();
-
-            // Non dovrebbe servire. Adesso che si schiantano tutti sulla barriera
-            // e quindi non ci sarà nessuno in attesa.
-            // while (!this.posAvailable) {
-            //     this.positionLock.await();
-            // }
-
-            return pos;
-        // } finally {
-        //     mutex.unlock();
-        // }
+        return pos;
     }
 
     public Velocity getVel(Worker worker) throws InterruptedException {
@@ -133,9 +147,6 @@ public class Body {
             double newPosX = pos.getX() + vel.getX() * dt;
             double newPosY = pos.getY() + vel.getY() * dt;
             pos.change(newPosX, newPosY);
-
-            // Non dovrebbe servire. Adesso che si schiantano tutti sulla barriera
-            // e quindi non ci sarà nessuno in attesa.
         } finally {
             mutex.unlock();
         }

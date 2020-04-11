@@ -1,18 +1,17 @@
-package pcd.pinballs.worker;
+package pcd.pinballs.jpf;
 
 import gov.nasa.jpf.vm.Verify;
 import pcd.pinballs.Simulator;
-import pcd.pinballs.mvc.MVCSimulatorWorker;
+import pcd.pinballs.worker.SimulatorWorker;
+import pcd.pinballs.worker.Worker;
 
 import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
 
-
-public class OldSimulator extends Simulator {
-
+public class CollisionSimulatorJpf extends Simulator {
     private ArrayList<SimulatorWorker> workers;
 
-    public OldSimulator(int nThread,
+    public CollisionSimulatorJpf(int nThread,
                         int nIter,
                         int nBodies) {
         super(nIter, nBodies);
@@ -28,22 +27,10 @@ public class OldSimulator extends Simulator {
     }
 
     public long execute() {
-
-        long start = System.currentTimeMillis();
-
-        /* Verifica con JPF. */
-        Verify.beginAtomic();
         /* Manda in esecuzione i workers. */
         for(Worker worker: workers) {
             worker.start();
         }
-        Verify.endAtomic();
-
-        for(SimulatorWorker worker: workers) {
-            assert worker.getCurrentIter() >= 0;
-            // assert this.nIterations == worker.getCurrentIter();
-        }
-
 
         for(Worker worker: workers) {
             try {
@@ -52,19 +39,12 @@ public class OldSimulator extends Simulator {
                 e.printStackTrace();
             }
         }
-
-        long end = System.currentTimeMillis();
-        //assert end - start < 100;
-        return end - start;
+        return 0;
     }
 
     @Override
-    public void startSimulation() {
-        // Non fa nulla.
-    }
+    public void startSimulation() {}
 
     @Override
-    public void pauseSimulation() {
-        // Non fa nulla.
-    }
+    public void pauseSimulation() {}
 }
